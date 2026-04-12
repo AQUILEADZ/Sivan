@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Mindmap Stratégie D2C — Sivan / Moovcare</title>
+<style>
+  * { margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #fafafa; }
+  #mindmap { width: 100vw; height: 100vh; display: block; }
+</style>
+</head>
+<body>
+<svg id="mindmap"></svg>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15"></script>
+<script>
+const md = `
+# Moovcare® — Stratégie D2C : Angles × Canaux (Canada FR)
+
+## 🎯 Angle 1 : L'Ange Gardien
+
+### 💡 Proposition de valeur
+- "Entre deux visites, qui surveille vraiment votre cancer ?"
+
+### 🔍 Google Search
+- Requêtes : "anxiété entre scanners", "peur rechute cancer", "suivi cancer entre visites"
+- Type : Search Non-Brand (intention émotionnelle)
+- Headline : "Surveillez votre cancer entre les visites — Alertes en temps réel"
+- CPC estimé : < 1$ (faible concurrence Canada)
+
+### 📱 Meta Prospection
+- Argument : L'aveuglement entre les visites — émotion, peur du silence
+- Type de pub : Image statique + Vidéo UGC (témoignage patient/aidant)
+- Hook : "Le cancer ne prend pas de pause entre vos rendez-vous."
+- Lead magnet : "Les 5 erreurs qui mettent votre suivi cancer en danger"
+- Audiences : Intérêts santé/cancer + Broad 35-65 ans
+
+### 📱 Meta Retargeting
+- Cible : Visiteurs site moovcare-patient.com
+- Hook : "Vous avez visité Moovcare. 5 min pour comprendre pourquoi ça change tout."
+- CTA : Essai sans engagement
+
+## 🎯 Angle 2 : Le Questionnaire qui Sauve
+
+### 💡 Proposition de valeur
+- "5 minutes par semaine. 7,6 mois de survie en plus. Prouvé cliniquement."
+
+### 🔍 Google Search
+- Requêtes : "survie cancer poumon", "comment détecter rechute cancer", "télésurveillance cancer"
+- Type : Search Non-Brand (intention solution)
+- Headline : "+7,6 mois de survie — Un questionnaire de 5 min, chaque semaine"
+- CPC estimé : < 1$ (quasi zéro concurrence)
+
+### 📱 Meta Prospection
+- Argument : Le chiffre choc — stat irréfutable, étude publiée
+- Type de pub : Image statique (chiffre en gros) + Carrousel (étude résumée)
+- Hook : "5 minutes par semaine. 7,6 mois de survie en plus."
+- Lead magnet : "Comment 5 min/semaine ont ajouté 7,6 mois de survie"
+- Audiences : Intérêts cancer/santé + Lookalike visiteurs site
+
+### 📱 Meta Retargeting
+- Cible : Téléchargeurs lead magnets non convertis
+- Hook : "L'étude est là. -67% de mortalité. Qu'est-ce que vous attendez ?"
+- CTA : Commencer à 39€/mois sans engagement
+
+## 🎯 Angle 3 : Pour Ceux qui Veillent
+
+### 💡 Proposition de valeur
+- "Vous ne pouvez pas guérir votre proche. Mais vous pouvez veiller sur lui."
+
+### 🔍 Google Search
+- Requêtes : "aider proche cancer", "aidant cancer que faire", "accompagner malade cancer"
+- Type : Search Non-Brand (intention aidant)
+- Headline : "Aidant d'un malade du cancer ? Moovcare veille quand vous ne pouvez pas"
+- CPC estimé : < 0,80$ (requêtes longue traîne)
+
+### 📱 Meta Prospection
+- Argument : L'impuissance de l'aidant → enfin une action concrète
+- Type de pub : Image émotionnelle + Vidéo UGC (témoignage aidant)
+- Hook : "Mon mari remplit son questionnaire chaque dimanche. Moi, je dors mieux."
+- Lead magnet : "Comment 5 min/semaine ont ajouté 7,6 mois de survie"
+- Audiences : Intérêts aidants/proches + femmes 40-65 ans
+
+### 📱 Meta Retargeting
+- Cible : Visiteurs pages Tox (tous cancers sous traitement)
+- Hook : "Cancer du sein, côlon, prostate… Moovcare Tox surveille tous les traitements."
+- CTA : Découvrir l'offre à 39€/mois
+
+## 💊 Deux produits
+
+### Moovcare Lung
+- Post-traitement cancer du poumon
+- Détection proactive des rechutes
+- USP : +7,6 mois de survie (étude Denis 2019)
+
+### Moovcare Tox
+- Tous cancers SOUS traitement actif
+- Suivi qualité de vie + effets secondaires
+- USP : Marché élargi × 10 (tous cancers)
+
+## 💰 Pricing
+
+### 39€/mois — Télésurveillance
+- Questionnaire hebdo + alertes médecin
+- Sans engagement
+- "Moins qu'un resto par mois"
+
+### 59€/mois — Télésurveillance + Soins de support
+- Tout le 39€ + accompagnement complet
+- Sans engagement
+- "La tranquillité d'esprit totale"
+
+## 📊 Matrice de priorité
+
+### 🥇 Priorité 1
+- Angle 2 "Le Questionnaire qui Sauve" × Google Search
+- Intent direct, USP nucléaire, CPC < 1$
+
+### 🥈 Priorité 2
+- Angle 1 "L'Ange Gardien" × Meta Prospection
+- Émotion forte, volume d'audience, format UGC
+
+### 🥉 Priorité 3
+- Angle 3 "Pour Ceux qui Veillent" × Meta Prospection
+- Audience différente (aidants), test exploratoire
+`;
+
+const { Transformer } = markmap;
+const { Markmap } = markmap;
+const transformer = new Transformer();
+const { root } = transformer.transform(md);
+const svgEl = document.getElementById('mindmap');
+const mm = Markmap.create(svgEl, {
+  colorFreezeLevel: 2,
+  initialExpandLevel: 3,
+  fitRatio: 0.95,
+  duration: 500,
+  paddingX: 20
+}, root);
+
+window.addEventListener('resize', () => mm.fit());
+</script>
+</body>
+</html>
